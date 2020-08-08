@@ -518,6 +518,7 @@ for TARGET in $TARGETS; do
       # Cross compile to all available iOS and simulator platforms
       if [ -d "$IOS_NDK_ARM_7" ] && ([ $XGOARCH == "." ] || [ $XGOARCH == "arm-7" ] || [ $XGOARCH == "framework" ]); then
         echo "Bootstrapping ios-$PLATFORM/arm-7..."
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/ios-ndk-arm-7/lib
         export PATH=$IOS_NDK_ARM_7/bin:$PATH
         GOOS=darwin GOARCH=arm GOARM=7 CGO_ENABLED=1 CC=arm-apple-darwin11-clang go install --tags ios std
 
