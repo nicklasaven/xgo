@@ -7,11 +7,19 @@ FROM nicklas/xgo-base
 
 MAINTAINER Péter Szilágyi <peterke@gmail.com>
 
+ENV ANDROID_CHAIN_x86_64   x86_64-4.9
+
+
 # Configure the root Go distribution and bootstrap based on it
 ENV GO_VERSION 11403
 
-RUN \
-  export ROOT_DIST=https://golang.org/dl/go1.14.7.linux-amd64.tar.gz    && \
-  export ROOT_DIST_SHA=4a7fa60f323ee1416a4b1425aefc37ea359e9d64df19c326a58953a97ad41ea5 && \
-  \
-  $BOOTSTRAP_PURE
+ADD build_all_deps.sh /build_all_deps.sh
+ENV BUILD_ALL_DEPS /build_all_deps.sh
+RUN chmod +x $BUILD_ALL_DEPS
+
+ADD build_deps.sh /build_deps.sh
+ENV BUILD_DEPS /build_deps.sh
+RUN chmod +x $BUILD_DEPS
+
+
+ENTRYPOINT ["/build_all_deps.sh"]
